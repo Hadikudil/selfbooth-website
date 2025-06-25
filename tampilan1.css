@@ -1,0 +1,109 @@
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  color: #333;
+  text-align: center;
+}
+.gradient-background {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-size: 400% 400%;
+  animation: gradientMove 15s ease infinite;
+}
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+ nav.navbar {
+      width: 100%;
+      background-color: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    nav ul {
+      display: flex;
+      justify-content: center;
+      list-style: none;
+      padding: 1em;
+      gap: 2rem;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #00796b;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    nav ul li a:hover {
+      color: #004d40;
+    }
+
+    .announcement {
+      background-color: #fff9c4;
+      border: 1px solid #fbc02d;
+      border-radius: 10px;
+      padding: 1em 2em;
+      margin: 2em 1em;
+      text-align: center;
+      max-width: 600px;
+    }
+
+
+.badge {
+  border: 2px solid blue;
+  color: blue;
+  padding: 4px 8px;
+  border-radius: 50px;
+  font-weight: bold;
+}
+
+.hero {
+  margin-top: 40px;
+}
+
+.hero h1 {
+  font-size: 48px;
+  margin: 10px 0;
+}
+
+.est, .year {
+  font-weight: bold;
+  font-size: 14px;
+  margin: 0 20px;
+}
+
+.tagline {
+  font-size: 16px;
+  color: #666;
+  margin-top: 10px;
+}
+
+.buttons {
+  margin-top: 30px;
+}
+
+.start-btn, .other-btn {
+  padding: 12px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 25px;
+  margin: 0 10px;
+  cursor: pointer;
+}
+
+.start-btn {
+  background-color: white;
+  color: black;
+}
+

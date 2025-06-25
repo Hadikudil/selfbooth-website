@@ -1,0 +1,83 @@
+  body {
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(to bottom, #83b8c6);
+  margin: 0;
+  padding: 40px 20px;
+  text-align: center;
+  color: #333;
+}
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 30px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+    video {
+      width: 400px;
+      height: 300px;
+      background: black;
+      border: 5px solid #ccc;
+      filter: none;
+    }
+   canvas {
+  background: white;
+  border: none;
+  display: block;
+}
+    button {
+      padding: 12px 20px;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+    #strip {
+      width: 266px;
+      height: 300px; /* 3x foto tinggi 300px */
+    }
+    /* Timer countdown style */
+    #countdown {
+      position: absolute;
+      font-size: 80px;
+      font-weight: bold;
+      color: red;
+      width: 100%;
+      top: 90px;
+      text-align: center;
+      pointer-events: none;
+      user-select: none;
+      z-index: 10;
+    }
+    .video-container {
+      position: relative;
+      display: inline-block;
+    }
+    label {
+      font-weight: bold;
+      margin-right: 10px;
+    }
+    select {
+      font-size: 16px;
+      padding: 5px;
+      margin-right: 20px;
+    }
+
+.navbar ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  margin: 0;
+  gap: 40px;
+  background-color: #fff;
+  border-radius: 30px;
+  margin: 20px auto;
+  width: fit-content;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.navbar a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+}
