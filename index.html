@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Selfbooth.ID</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      background: linear-gradient(to right, #83b8c6, #e0f7fa);
+      color: #333;
+      min-height: 100vh;
+    }
+    .fade-in {
+      animation: fadeIn 0.8s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    nav.navbar {
+      width: 100%;
+      background-color: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    nav ul {
+      display: flex;
+      justify-content: center;
+      list-style: none;
+      padding: 1em;
+      gap: 2rem;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #00796b;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    nav ul li a:hover {
+      color: #004d40;
+    }
+  </style>
+</head>
+<body class="font-sans">
+
+  <!-- Navbar -->
+  <nav class="navbar fade-in sticky top-0 z-50 w-full bg-white/90 shadow-md">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="flex justify-between items-center py-4">
+        <div class="text-2xl font-bold text-[#00796b] tracking-wide">
+          SELFBOOTH.ID
+        </div>
+        <ul class="flex space-x-6 font-semibold text-[#00796b]">
+          <li><a href="index.html" class="hover:text-[#004d40] transition">Home</a></li>
+          <li><a href="about.html" class="hover:text-[#004d40] transition">About</a></li>
+          <li><a href="privacy.html" class="hover:text-[#004d40] transition">Privacy</a></li>
+          <li><a href="contact.html" class="hover:text-[#004d40] transition">Contact</a></li>
+          <li><a href="choseLayout.html" class="hover:text-[#004d40] transition">Layout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <main class="max-w-4xl mx-auto px-6 py-20 text-center fade-in">
+    <span class="text-sm font-bold text-[#004d40] tracking-widest">EST</span>
+    <h1 class="text-5xl sm:text-6xl font-extrabold text-[#00695c] my-4">SELFBOOTH.ID</h1>
+    <span class="text-sm font-bold text-[#004d40] tracking-widest">2025</span>
+    <p class="mt-6 text-xl text-gray-700">Arahkan dirimu ke kamera!<br/>Siapkan ekspresi terbaik, dan biarkan layar jadi saksi gayamu.</p>
+    <div class="mt-10">
+      <a href="choseLayout.html">
+        <button class="bg-[#00897b] text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-[#00695c] transition-transform transform hover:scale-105">
+          MULAI 📷
+        </button>
+      </a>
+    </div>
+  </main>
+
+  <!-- Announcement Section -->
+  <section class="bg-yellow-100 border border-yellow-400 text-yellow-800 px-6 py-4 rounded-xl shadow-lg max-w-xl mx-auto my-8 fade-in text-center">
+    <span class="bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold mr-2">NEW</span>
+    <strong>Yuk, abadikan momen serumu di sini!</strong>
+    <p class="mt-2">Ambil posisi terbaikmu, lalu tekan tombol dan tunjukkan gayamu.</p>
+  </section>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>
