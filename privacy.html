@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kebijakan Privasi - Selfbooth.ID</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      /* Menggunakan gradien latar belakang dari index.html */
+      background: linear-gradient(to right, #83b8c6, #e0f7fa);
+      color: #333;
+      min-height: 100vh;
+      font-family: sans-serif; /* Menggunakan font sans-serif default dari index.html */
+      display: flex;
+      flex-direction: column; /* Mengatur konten secara vertikal */
+      align-items: center; /* Memusatkan konten secara horizontal */
+      justify-content: flex-start; /* Mengatur konten mulai dari atas */
+    }
+    .fade-in {
+      animation: fadeIn 0.8s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Styling Navbar (disalin dari index.html) */
+    nav.navbar {
+      width: 100%;
+      background-color: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    nav ul {
+      display: flex;
+      justify-content: center;
+      list-style: none;
+      padding: 1em;
+      gap: 2rem;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #00796b;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    nav ul li a:hover {
+      color: #004d40;
+    }
+
+    /* Warna primary untuk judul yang konsisten dengan index.html */
+    .primary-color {
+      color: #00695c; /* Warna judul utama di index.html */
+    }
+
+    /* Styling footer yang disempurnakan */
+    footer {
+        margin-top: auto; /* Mendorong footer ke bagian bawah jika konten pendek */
+        padding: 20px;
+        color: #555;
+        font-size: 0.9em;
+        width: 100%;
+        text-align: center;
+    }
+  </style>
+</head>
+<body>
+<nav class="navbar fade-in sticky top-0 z-50 w-full bg-white/90 shadow-md">
+  <div class="max-w-6xl mx-auto px-4">
+    <div class="flex justify-between items-center py-4">
+      <div class="text-2xl font-bold text-[#00796b] tracking-wide">
+        SELFBOOTH.ID
+      </div>
+      <ul class="flex space-x-6 font-semibold text-[#00796b]">
+        <li><a href="index.html" class="hover:text-[#004d40] transition">Home</a></li>
+        <li><a href="about.html" class="hover:text-[#004d40] transition">About</a></li>
+        <li><a href="privacy.html" class="hover:text-[#004d40] transition">Privacy</a></li>
+        <li><a href="contact.html" class="hover:text-[#004d40] transition">Contact</a></li>
+        <li><a href="choseLayout.html" class="hover:text-[#004d40] transition">Layout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+  <main class="max-w-4xl mx-auto py-12 px-6 fade-in">
+
+    <section class="mb-16 bg-white p-8 rounded-xl shadow-lg"> <h2 class="text-4xl sm:text-5xl font-bold mb-6 text-center primary-color">Kebijakan Privasi</h2> <p class="text-lg mb-4 text-gray-700"> <strong>Privasi Anda adalah prioritas kami!</strong> Aplikasi Photobooth ini tidak mengumpulkan, menyimpan, atau membagikan data atau foto apa pun dari Anda. Semuanya terjadi secara lokal di perangkat Anda—gambar Anda tidak pernah meninggalkan browser Anda.
+      </p>
+      <p class="text-lg mb-4 text-gray-700"> Aplikasi ini hanya mengakses kamera Anda dengan izin Anda, dan setelah Anda mengambil foto, foto tersebut tetap bersama Anda. Tidak ada unggahan, tidak ada pelacakan, tidak ada penyimpanan tersembunyi.
+      </p>
+    </section>
+
+  </main>
+
+  <footer>
+    &copy; 2025 Selfbooth.ID. All rights reserved. </footer>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

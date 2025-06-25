@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Photo Booth 4x Strip + Timer & Filter</title>
+  <link rel="stylesheet" href="css/tampilan3.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body style="background-color: #83b8c6;">
+
+ <nav class="navbar fade-in sticky top-0 z-50 w-full bg-white/90 shadow-md">
+  <div class="max-w-6xl mx-auto px-4">
+    <div class="flex justify-between items-center py-4">
+      <div class="text-2xl font-bold text-[#00796b] tracking-wide">
+        SELFBOOTH.ID
+      </div>
+      <ul class="flex space-x-6 font-semibold text-[#00796b]">
+        <li><a href="index.html" class="hover:text-[#004d40] transition">Home</a></li>
+        <li><a href="about.html" class="hover:text-[#004d40] transition">About</a></li>
+        <li><a href="privacy.html" class="hover:text-[#004d40] transition">Privacy</a></li>
+        <li><a href="contact.html" class="hover:text-[#004d40] transition">Contact</a></li>
+        <li><a href="choseLayout.html" class="hover:text-[#004d40] transition">Layout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<section class="flex flex-col items-center text-center py-10 px-4 fade-in">
+  <h1 class="text-4xl sm:text-5xl font-extrabold text-[#00695c] mb-2 tracking-tight">
+    Layout B - Strip 4 Pose
+  </h1>
+  <p class="text-lg sm:text-xl text-gray-700 max-w-2xl">
+    Pilih ekspresimu, atur waktu dan filter favoritmu, lalu biarkan kamera menangkap gayamu dalam 4 foto bertingkat. Hadirkan gaya terbaikmu dalam setiap jepretan 📸✨
+  </p>
+</section>
+
+  <div style="text-align: center; margin-top: 20px;">
+  <h1 class="photobooth-header">📸 Photo Booth - 4x Strip + Timer & Filter</h1>
+
+
+ <section class="flex flex-col sm:flex-row justify-center items-center gap-6 py-6 fade-in">
+  <!-- Timer -->
+  <div class="flex flex-col items-start">
+    <label for="timerSelect" class="text-lg font-semibold text-gray-800 mb-1">⏱️ Pilih Timer</label>
+    <select id="timerSelect" class="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#00796b]">
+      <option value="3">3 Detik</option>
+      <option value="5">5 Detik</option>
+      <option value="7">7 Detik</option>
+      <option value="10">10 Detik</option>
+    </select>
+  </div>
+
+  <!-- Filter -->
+  <div class="flex flex-col items-start">
+    <label for="filterSelect" class="text-lg font-semibold text-gray-800 mb-1">🎨 Pilih Filter</label>
+    <select id="filterSelect" class="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#00796b]">
+      <option value="none">Normal</option>
+      <option value="grayscale(100%)">Hitam Putih</option>
+      <option value="sepia(0.6)">Vintage</option>
+      <option value="brightness(1.2) contrast(1.1)">Lembut</option>
+      <option value="invert(1)">Invers</option>
+    </select>
+  </div>
+</section>
+  <div class="container">
+    <div class="video-container">
+      <video id="video" autoplay></video>
+      <div id="countdown"></div>
+    </div>
+
+    <canvas id="strip" width="400" height="1200"></canvas> <!-- 4 foto -->
+    </div>
+
+    <div id="filters">
+      <label>Kecerahan: <input type="range" id="brightness" min="0" max="200" value="100"></label>
+      <label>Grayscale: <input type="range" id="grayscale" min="0" max="100" value="0"></label>
+      <label>Sepia: <input type="range" id="sepia" min="0" max="100" value="0"></label>
+      <label>Blur: <input type="range" id="blur" min="0" max="10" value="0"></label>
+    </div>
+  </div>
+
+  <button id="start" class="bg-[#00897b] text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-[#00695c] transition-transform transform hover:scale-105">📸 Mulai Foto</button>
+
+  <div id="after-capture" style="margin-top: 15px; display: none;">
+    <button id="retake" class="bg-[#00897b] text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-[#00695c] transition-transform transform hover:scale-105">🔁 Retake</button>
+    <button id="done" class="bg-[#00897b] text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-[#00695c] transition-transform transform hover:scale-105">✅ Done</button>
+  </div>
+
+  <script>
+    const video = document.getElementById('video');
+    const startBtn = document.getElementById('start');
+    const stripCanvas = document.getElementById('strip');
+    const stripCtx = stripCanvas.getContext('2d');
+    const countdownEl = document.getElementById('countdown');
+    const timerSelect = document.getElementById('timerSelect');
+    const filterSelect = document.getElementById('filterSelect');
+    const retakeBtn = document.getElementById('retake');
+    const doneBtn = document.getElementById('done');
+    const afterCapture = document.getElementById('after-capture');
+
+    navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
+      video.srcObject = stream;
+    }).catch(err => {
+      alert('Tidak bisa mengakses kamera: ' + err);
+    });
+
+    filterSelect.addEventListener('change', () => {
+      video.style.filter = filterSelect.value;
+    });
+
+    function updateFilters() {
+      const brightness = document.getElementById("brightness").value;
+      const grayscale = document.getElementById("grayscale").value;
+      const sepia = document.getElementById("sepia").value;
+      const blur = document.getElementById("blur").value;
+
+      const filterStr = `brightness(${brightness}%) grayscale(${grayscale}%) sepia(${sepia}%) blur(${blur}px)`;
+      video.style.filter = filterStr;
+    }
+
+    ["brightness", "grayscale", "sepia", "blur"].forEach(id => {
+      document.getElementById(id).addEventListener("input", updateFilters);
+    });
+
+    async function countdown(seconds) {
+      return new Promise(resolve => {
+        let count = seconds;
+        countdownEl.textContent = count;
+        const interval = setInterval(() => {
+          count--;
+          if (count <= 0) {
+            clearInterval(interval);
+            countdownEl.textContent = "";
+            resolve();
+          } else {
+            countdownEl.textContent = count;
+          }
+        }, 1000);
+      });
+    }
+
+    startBtn.addEventListener('click', async () => {
+      startBtn.disabled = true;
+      stripCtx.fillStyle = "white";
+      stripCtx.fillRect(0, 0, stripCanvas.width, stripCanvas.height);
+
+      const timerDuration = parseInt(timerSelect.value);
+
+      for(let i = 0; i < 4; i++) {
+        await countdown(timerDuration);
+        stripCtx.filter = video.style.filter;
+        stripCtx.drawImage(video, 0, i * 300, stripCanvas.width, 300);
+        stripCtx.filter = 'none';
+      }
+
+      afterCapture.style.display = 'block';
+      startBtn.style.display = 'none';
+    });
+
+    retakeBtn.addEventListener('click', () => {
+      stripCtx.clearRect(0, 0, stripCanvas.width, stripCanvas.height);
+      stripCtx.fillStyle = "white";
+      stripCtx.fillRect(0, 0, stripCanvas.width, stripCanvas.height);
+      afterCapture.style.display = 'none';
+      startBtn.style.display = 'inline-block';
+      startBtn.disabled = false;
+    });
+
+    doneBtn.addEventListener('click', () => {
+      const dataURL = stripCanvas.toDataURL("image/png");
+      localStorage.setItem("photoStrip", dataURL);
+      window.location.href = "EditA.html";
+    });
+  </script>
+
+</body>
+</html>

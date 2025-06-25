@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kontak Kami - Selfbooth.ID</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+   <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    /* Styling umum dari index.html dan contact.html */
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      background: linear-gradient(to right, #83b8c6, #e0f7fa); /* Menggunakan gradien dari index.html */
+      color: #333;
+      min-height: 100vh;
+      font-family: sans-serif; /* Menggunakan sans-serif dari index.html */
+      display: flex; /* Untuk menempatkan konten di tengah */
+      flex-direction: column; /* Konten vertikal */
+      align-items: center; /* Pusat horizontal */
+      justify-content: flex-start; /* Konten mulai dari atas */
+    }
+
+    .fade-in {
+      animation: fadeIn 0.8s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Styling Navbar (dari index.html) */
+    nav.navbar {
+      width: 100%;
+      background-color: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    nav ul {
+      display: flex;
+      justify-content: center;
+      list-style: none;
+      padding: 1em;
+      gap: 2rem;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #00796b;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    nav ul li a:hover {
+      color: #004d40;
+    }
+
+    /* Styling tambahan untuk form */
+    .primary-color {
+      color: #00695c; /* Menyesuaikan dengan warna teks judul di index.html */
+    }
+
+    .primary-bg {
+      background-color: #00897b; /* Warna tombol MULAI dari index.html */
+    }
+
+    .hover\:primary-hover:hover {
+      background-color: #00695c; /* Hover tombol MULAI dari index.html */
+    }
+
+    /* Gaya untuk input/textarea focus */
+    .focus\:ring-2:focus {
+        --tw-ring-color: #00796b; /* Warna fokus yang konsisten dengan brand */
+    }
+  </style>
+</head>
+<body>
+<nav class="navbar fade-in sticky top-0 z-50 w-full bg-white/90 shadow-md">
+  <div class="max-w-6xl mx-auto px-4">
+    <div class="flex justify-between items-center py-4">
+      <div class="text-2xl font-bold text-[#00796b] tracking-wide">
+        SELFBOOTH.ID
+      </div>
+      <ul class="flex space-x-6 font-semibold text-[#00796b]">
+        <li><a href="index.html" class="hover:text-[#004d40] transition">Home</a></li>
+        <li><a href="about.html" class="hover:text-[#004d40] transition">About</a></li>
+        <li><a href="privacy.html" class="hover:text-[#004d40] transition">Privacy</a></li>
+        <li><a href="contact.html" class="hover:text-[#004d40] transition">Contact</a></li>
+        <li><a href="choseLayout.html" class="hover:text-[#004d40] transition">Layout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  <main class="max-w-6xl mx-auto px-6 py-16">
+    <div class="grid md:grid-cols-2 gap-12 items-start bg-white rounded-xl shadow-lg p-10 fade-in">
+
+      <div>
+        <h2 class="text-4xl font-bold mb-4 primary-color">Hubungi Kami</h2>
+        <p class="text-lg mb-4">
+          Kami ingin mendengar dari Anda! Baik itu pertanyaan, saran, atau masalah, jangan ragu untuk menghubungi kami—masukan Anda membantu kami untuk meningkatkan layanan.
+        </p>
+        <p class="text-lg">
+          Untuk pertanyaan komersial atau kolaborasi, kirimkan pesan kepada kami—kami akan senang berdiskusi!
+        </p>
+      </div>
+
+      <div class="space-y-5 w-full">
+        <div id="alert-box" class="hidden p-4 rounded-md text-sm font-semibold"></div>
+
+        <form id="contactForm" class="space-y-5">
+          <div>
+            <label for="name" class="block text-sm font-semibold mb-1">Nama</label>
+            <input type="text" name="name" id="name" required 
+                   class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#00796b]" />
+          </div>
+
+          <div>
+            <label for="email" class="block text-sm font-semibold mb-1">Email</label>
+            <input type="email" name="email" id="email" required 
+                   class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#00796b]" />
+          </div>
+
+          <div>
+            <label for="message" class="block text-sm font-semibold mb-1">Pesan</label>
+            <textarea name="message" id="message" rows="4" required 
+                      class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#00796b]"></textarea>
+          </div>
+
+          <button type="submit" 
+                  class="w-full py-2 primary-bg text-white font-semibold rounded-md hover:primary-hover transition duration-200">
+            Kirim
+          </button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const form = document.getElementById('contactForm');
+    const alertBox = document.getElementById('alert-box');
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+
+      try {
+        const response = await fetch("https://formspree.io/f/mrbkoedj",   { /* */
+          method: "POST", /* */
+          body: formData, /* */
+          headers: { /* */
+            'Accept': 'application/json' /* */
+          }
+        });
+
+        if (response.ok) { /* */
+          alertBox.className = "p-4 rounded-md text-green-700 bg-green-100 font-semibold mb-4"; /* */
+          alertBox.textContent = "✅ Pesan Anda berhasil dikirim!"; /* */
+          alertBox.style.display = 'block'; /* */
+          form.reset(); /* */
+        } else {
+          throw new Error("Gagal mengirim pesan.");
+        }
+      } catch (error) { /* */
+        alertBox.className = "p-4 rounded-md text-red-700 bg-red-100 font-semibold mb-4"; /* */
+        alertBox.textContent = "❌ Terjadi kesalahan. Silakan coba lagi."; /* */
+        alertBox.style.display = 'block'; /* */
+      }
+    });
+  </script>
+</body>
+</html>

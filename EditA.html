@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Edit Foto - Selfbooth.ID</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      background: linear-gradient(to right, #83b8c6, #e0f7fa); /* Latar belakang dari index.html */
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column; /* Menggunakan flex column untuk layout utama */
+      align-items: center;
+      justify-content: center;
+      padding: 20px; /* Padding untuk konten */
+    }
+
+    /* Override beberapa gaya default Tailwind jika perlu, atau sesuaikan styling di bawah */
+
+    .photo-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba(255, 255, 255, 0.9); /* Latar belakang semi-transparan */
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      padding: 30px;
+      margin-top: 20px; /* Jarak dari navbar */
+      margin-bottom: 20px;
+      flex-wrap: wrap; /* Agar responsif pada layar kecil */
+      gap: 40px; /* Jarak antar elemen utama */
+    }
+
+    #photo-frame-container {
+      position: relative;
+      border-radius: 12px;
+      width: fit-content;
+      height: fit-content;
+      border: none;
+      overflow: hidden; /* Penting agar stiker tidak keluar dari sudut border-radius */
+    }
+
+    #photo-strip {
+      max-width: 450px;
+      max-height: 500px;
+      object-fit: cover;
+      display: block;
+      border-radius: 12px;
+      border: 15px solid white; /* default frame */
+      background: transparent;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      transition: border 0.3s ease-in-out, border-image 0.3s ease-in-out;
+    }
+
+    .photo-sticker {
+      position: absolute;
+      font-size: 36px; /* Ukuran stiker sedikit lebih besar */
+      cursor: grab;
+      user-select: none;
+      z-index: 10;
+      transition: transform 0.2s ease-out, opacity 0.2s ease-out, box-shadow 0.2s ease-out;
+      opacity: 0.95;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .photo-sticker:active {
+      cursor: grabbing;
+      transition: none;
+      transform: scale(1.05);
+      opacity: 1;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    }
+
+    #frame-options, #sticker-options {
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 15px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(5px);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex-shrink: 0; /* Hindari menyusut pada flexbox */
+    }
+
+    /* Atur ulang posisi untuk flexbox */
+    .photo-wrapper {
+        flex-direction: row; /* Default layout horizontal */
+        align-items: flex-start; /* Elemen diatur dari atas */
+    }
+
+    #frame-options {
+        position: static; /* Hapus absolute positioning */
+        transform: none; /* Hapus transform */
+        margin-right: 20px; /* Jarak dari foto */
+    }
+
+    #sticker-options {
+        position: static; /* Hapus absolute positioning */
+        transform: none; /* Hapus transform */
+        margin-left: 20px; /* Jarak dari foto */
+    }
+
+    @media (max-width: 768px) {
+        .photo-wrapper {
+            flex-direction: column; /* Ubah ke layout vertikal pada layar kecil */
+            align-items: center;
+            gap: 20px; /* Sesuaikan jarak */
+            padding: 20px;
+        }
+        #frame-options, #sticker-options {
+            margin: 0; /* Hapus margin yang tidak perlu */
+            width: 100%; /* Lebar penuh */
+            flex-direction: row; /* Atur opsi dalam baris */
+            justify-content: center;
+            flex-wrap: wrap; /* Biarkan opsi membungkus jika terlalu banyak */
+        }
+    }
+
+
+    .frame-option {
+      width: 45px;
+      height: 45px;
+      border: 3px solid transparent;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.3s ease-in-out, border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+
+    .frame-option:hover {
+      transform: scale(1.15);
+      border-color: #a0a0a0;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .frame-option.selected {
+      border-color: #3f51b5;
+      box-shadow: 0 0 12px rgba(63, 81, 181, 0.5);
+      transform: scale(1.1);
+    }
+
+    .frame-option[data-color="none"] {
+      background: repeating-linear-gradient(45deg, #eee, #eee 10px, #ccc 10px, #ccc 20px);
+      border: 1px dashed #777;
+      color: #555;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    .sticker-option {
+      width: 55px;
+      height: 55px;
+      background: #fff;
+      border: 3px solid transparent;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.25s ease-out, border-color 0.3s ease-out, box-shadow 0.3s ease-out;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      font-size: 32px; /* Ukuran emoji stiker */
+    }
+
+    .sticker-option:hover {
+      transform: scale(1.15);
+      border-color: #90caf9;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    .sticker-option.selected {
+      border-color: #2196f3;
+      box-shadow: 0 0 15px rgba(33, 150, 243, 0.4);
+      transform: scale(1.1);
+    }
+
+    .sticker-option[data-sticker="none"] {
+      font-size: 16px;
+      font-weight: bold;
+      color: #666;
+    }
+
+    /* Tambahan untuk tombol save */
+    #saveButton {
+      margin-top: 30px;
+      background-color: #00897b; /* Warna dari tombol MULAI */
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 1.125rem;
+      font-weight: 600;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #saveButton:hover {
+      background-color: #00695c;
+      transform: scale(1.05);
+    }
+
+  </style>
+</head>
+<body class="font-sans">
+
+  <nav class="navbar fade-in sticky top-0 z-50 w-full bg-white/90 shadow-md">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="flex justify-between items-center py-4">
+        <div class="text-2xl font-bold text-[#00796b] tracking-wide">
+          SELFBOOTH.ID
+        </div>
+        <ul class="flex space-x-6 font-semibold text-[#00796b]">
+          <li><a href="index.html" class="hover:text-[#004d40] transition">Home</a></li>
+          <li><a href="about.html" class="hover:text-[#004d40] transition">About</a></li>
+          <li><a href="privacy.html" class="hover:text-[#004d40] transition">Privacy</a></li>
+          <li><a href="contact.html" class="hover:text-[#004d40] transition">Contact</a></li>
+          <li><a href="choseLayout.html" class="hover:text-[#004d40] transition">Layout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <h1 class="text-4xl font-extrabold text-[#00695c] my-8 fade-in text-center">Edit Fotomu!</h1>
+
+  <div class="photo-wrapper fade-in">
+
+    <div id="frame-options">
+      <div class="frame-option selected" data-color="white" style="background:white;" title="Putih"></div>
+      <div class="frame-option" data-color="black" style="background:black;" title="Hitam"></div>
+      <div class="frame-option" data-color="pink" style="background:pink;" title="Pink"></div>
+      <div class="frame-option" data-color="lightblue" style="background:lightblue;" title="Biru Muda"></div>
+      <div class="frame-option" data-color="custom" style="background:linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet);" title="Custom"></div>
+      <div class="frame-option" data-color="none" title="None">No</div>
+    </div>
+
+    <div id="photo-frame-container">
+      <img id="photo-strip" src="" alt="Hasil Foto Strip" />
+    </div>
+
+    <div id="sticker-options">
+      <div class="sticker-option selected" data-sticker="none" title="No Sticker">No</div>
+      <div class="sticker-option" data-sticker="kiss" title="Kiss">💋</div>
+      <div class="sticker-option" data-sticker="flower" title="Bunga">🌸</div>
+      <div class="sticker-option" data-sticker="star" title="Bintang">⭐</div>
+      <div class="sticker-option" data-sticker="love" title="Love">❤️</div>
+      <div class="sticker-option" data-sticker="teddy" title="Teddy">🧸</div>
+    </div>
+
+  </div>
+
+  <button id="saveButton">
+    Simpan Foto <i data-lucide="download"></i>
+  </button>
+
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+  <script>
+    lucide.createIcons();
+
+    const photoStrip = localStorage.getItem('photoStrip');
+    const photoStripImg = document.getElementById('photo-strip');
+    if(photoStrip) {
+      photoStripImg.src = photoStrip;
+    } else {
+      photoStripImg.alt = "Foto strip belum tersedia. Silakan kembali ke halaman utama untuk mengambil foto.";
+      photoStripImg.style.display = 'none'; // Sembunyikan jika tidak ada foto
+      // Mungkin tambahkan pesan ke pengguna untuk kembali
+      const messageDiv = document.createElement('div');
+      messageDiv.textContent = "Oops! Foto strip tidak ditemukan. Silakan ambil foto terlebih dahulu.";
+      messageDiv.className = "text-red-600 text-lg font-semibold mt-4";
+      document.querySelector('.photo-wrapper').prepend(messageDiv);
+    }
+
+    // Frame
+    const frameOptions = document.querySelectorAll('.frame-option');
+    const photoFrameContainer = document.getElementById('photo-frame-container');
+
+    frameOptions.forEach(option => {
+      option.addEventListener('click', () => {
+        frameOptions.forEach(o => o.classList.remove('selected'));
+        option.classList.add('selected');
+
+        const color = option.dataset.color;
+
+        if(color === 'none') {
+          photoStripImg.style.border = 'none';
+          photoStripImg.style.borderImage = 'none';
+        } else {
+          photoStripImg.style.borderWidth = "15px";
+          photoStripImg.style.borderStyle = "solid";
+
+          if (color === 'custom') {
+            photoStripImg.style.borderImage = 'linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet) 1';
+            photoStripImg.style.borderColor = ''; // Penting untuk menghapus borderColor sebelumnya
+          } else {
+            photoStripImg.style.borderImage = 'none';
+            photoStripImg.style.borderColor = color;
+          }
+        }
+      });
+    });
+
+    // Sticker
+    const stickerOptions = document.querySelectorAll('.sticker-option');
+    let currentStickers = [];
+
+    // Posisi default 5 stiker disesuaikan supaya ada di dalam foto (mengacu ke ukuran maksimal)
+    const defaultPositions = [
+      { left: 20, top: 20 },
+      { left: 230, top: 20 },
+      { left: 20, top: 380 },
+      { left: 230, top: 380 },
+      { left: 125, top: 200 }
+    ];
+
+    function makeDraggable(el) {
+      let isDragging = false;
+      let offsetX = 0;
+      let offsetY = 0;
+
+      el.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        offsetX = e.clientX - el.getBoundingClientRect().left;
+        offsetY = e.clientY - el.getBoundingClientRect().top;
+        el.style.transition = 'none';
+      });
+
+      document.addEventListener('mouseup', () => {
+        if(isDragging) {
+          isDragging = false;
+          el.style.transition = 'transform 0.2s';
+        }
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        const containerRect = photoFrameContainer.getBoundingClientRect();
+        let newLeft = e.clientX - containerRect.left - offsetX;
+        let newTop = e.clientY - containerRect.top - offsetY;
+
+        // Batasi agar stiker tidak keluar container
+        newLeft = Math.max(0, Math.min(newLeft, containerRect.width - el.offsetWidth));
+        newTop = Math.max(0, Math.min(newTop, containerRect.height - el.offsetHeight));
+
+        el.style.left = newLeft + 'px';
+        el.style.top = newTop + 'px';
+      });
+    }
+
+    function clearStickers() {
+      currentStickers.forEach(s => s.remove());
+      currentStickers = [];
+    }
+
+    function createStickers(type) {
+      clearStickers();
+      if(type === 'none') return;
+
+      const stickerEmoji = document.querySelector(`.sticker-option[data-sticker="${type}"]`).textContent;
+
+      defaultPositions.forEach(pos => {
+        const s = document.createElement('div');
+        s.className = 'photo-sticker';
+        s.textContent = stickerEmoji;
+        s.style.left = pos.left + 'px';
+        s.style.top = pos.top + 'px';
+        photoFrameContainer.appendChild(s);
+        makeDraggable(s);
+        currentStickers.push(s);
+      });
+    }
+
+    stickerOptions.forEach(option => {
+      option.addEventListener('click', () => {
+        stickerOptions.forEach(o => o.classList.remove('selected'));
+        option.classList.add('selected');
+        createStickers(option.dataset.sticker);
+      });
+    });
+
+    // Init stiker no sticker dulu
+    createStickers('none');
+
+    // Fungsi untuk menyimpan foto
+    document.getElementById('saveButton').addEventListener('click', () => {
+        html2canvas(photoFrameContainer, {
+            useCORS: true, // Penting jika gambar dari sumber eksternal
+            allowTaint: true, // Jika gambar dari domain yang sama tapi tanpa CORS
+        }).then(canvas => {
+            const link = document.createElement('a');
+            link.download = 'selfbooth_photo_edited.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }).catch(err => {
+            console.error("Gagal menyimpan foto:", err);
+            alert("Maaf, terjadi kesalahan saat mencoba menyimpan foto Anda.");
+        });
+    });
+
+  </script>
+</body>
+</html>
